@@ -75,7 +75,7 @@ class SalebotProtocol implements ISalebotProtocol
             return new ResponseModel(Response::STATUS_FAIL);
         }
 
-        $payload = json_decode($body);
+        $payload = json_decode($body, true);
 
         return new ResponseModel(
             ($payload['status'] ?? Response::STATUS_SUCCESS),
