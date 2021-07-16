@@ -1,5 +1,6 @@
 <?php namespace professionalweb\salebot\Interfaces\Services;
 
+use professionalweb\salebot\Interfaces\Models\Message;
 use professionalweb\salebot\Interfaces\Models\Attachment;
 
 /**
@@ -42,11 +43,33 @@ interface SalebotService
 
     public function getClientIdByWhatsApp(string $phone);
 
-    public function getClientIdByPhone(string $phone);
+    /**
+     * Get client id by phone
+     *
+     * @param string $phone
+     *
+     * @return int|null
+     */
+    public function getClientIdByPhone(string $phone): ?int;
 
-    public function getClientIdByEmail(string $email);
+    /**
+     * Get client id by email
+     *
+     * @param string $email
+     *
+     * @return int|null
+     */
+    public function getClientIdByEmail(string $email): ?int;
 
-    public function getClientIdByVar(string $var, $val);
+    /**
+     * Get client id by variable's value
+     *
+     * @param string $var
+     * @param        $val
+     *
+     * @return int|null
+     */
+    public function getClientIdByVar(string $var, $val): ?int;
 
     public function getVkSubscribers(int $page = 0, string $tag = '', ?int $group = null, ?int $dateFrom = null, ?int $dateTo = null);
 
@@ -54,5 +77,10 @@ interface SalebotService
 
     public function checkWhatsApp(string $phone);
 
-    public function getMessages();
+    /**
+     * Get messages
+     *
+     * @return array|Message[]
+     */
+    public function getMessages(): array;
 }

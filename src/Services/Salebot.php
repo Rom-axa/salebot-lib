@@ -3,7 +3,9 @@
 use Illuminate\Http\Request;
 use professionalweb\salebot\Interfaces\Models\Button;
 use professionalweb\salebot\Interfaces\Models\Client;
+use professionalweb\salebot\Interfaces\Models\Message;
 use professionalweb\salebot\Interfaces\Models\Attachment;
+use professionalweb\salebot\Models\Message as MessageModel;
 use professionalweb\salebot\Interfaces\Services\SalebotService;
 use professionalweb\salebot\Interfaces\Services\SalebotProtocol as ISalebotProtocol;
 
@@ -253,32 +255,65 @@ class Salebot implements SalebotService
         return $result;
     }
 
-    public function getClientIdByPhone(string $phone)
+    /**
+     * Get client id by phone
+     *
+     * @param string $phone
+     *
+     * @return int|null
+     */
+    public function getClientIdByPhone(string $phone): ?int
     {
         $result = $this->getProtocol()->send(Request::METHOD_GET, self::METHOD_CLIENT_ID_BY_PHONE, [
             'phone' => $phone,
         ]);
 
-        return $result;
+        if ($result->isSuccess()) {
+            return $result->getData()['client_id'] ?? null;
+        }
+
+        return null;
     }
 
-    public function getClientIdByEmail(string $email)
+    /**
+     * Get client id by email
+     *
+     * @param string $email
+     *
+     * @return int|null
+     */
+    public function getClientIdByEmail(string $email): ?int
     {
         $result = $this->getProtocol()->send(Request::METHOD_GET, self::METHOD_CLIENT_ID_BY_EMAIL, [
             'email' => $email,
         ]);
+        if ($result->isSuccess()) {
+            return $result->getData()['client_id'] ?? null;
+        }
 
-        return $result;
+        return null;
     }
 
-    public function getClientIdByVar(string $var, $val)
+    /**
+     * Get client id by variable's value
+     *
+     * @param string $var
+     * @param        $val
+     *
+     * @return int|null
+     */
+    public function getClientIdByVar(string $var, $val): ?int
     {
         $result = $this->getProtocol()->send(Request::METHOD_GET, self::METHOD_CLIENT_ID_BY_VAR, [
             'var' => $var,
             'val' => $val,
         ]);
 
-        return $result;
+        if ($result->isSuccess()) {
+            return $result->getData()['client_id'] ?? null;
+        }
+
+        return null;
     }
 
     public function getVkSubscribers(int $page = 0, string $tag = '', ?int $group = null, ?int $dateFrom = null, ?int $dateTo = null)
@@ -313,10 +348,27 @@ class Salebot implements SalebotService
         return $result;
     }
 
-    public function getMessages()
+    /**
+     * Get messages
+     *
+     * @return array|Message[]
+     */
+    public function getMessages(): array
     {
         $result = $this->getProtocol()->send(Request::METHOD_GET, self::METHOD_MESSAGES);
 
-        return $result;
+        if ($result->isSuccess()) {
+            return array_map(function (array $item) {
+                return new MessageModel(
+                    $item['id'],
+                    $item['condition'],
+                    $item['answer'],
+                    $item['message_type'],
+                    $item['description']
+                );
+            }, $result->getData()['messages'] ?? []);
+        }
+
+        return [];
     }
 }
