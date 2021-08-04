@@ -59,10 +59,11 @@ class SalebotProtocol implements ISalebotProtocol
         }
         $curl = curl_init($url);
         curl_setopt($curl, CURLOPT_USERAGENT, 'PW.Sendsay.Lib/PHP');
-        if ($httpMethod === 'post') {
-            curl_setopt($curl, CURLOPT_POST, 1);
-            curl_setopt($curl, CURLOPT_POSTFIELDS, $params);
-        } elseif ($httpMethod !== 'get') {
+//        if ($httpMethod === 'post') {
+//            curl_setopt($curl, CURLOPT_POST, 1);
+//            curl_setopt($curl, CURLOPT_POSTFIELDS, $params);
+//        } else
+        if ($httpMethod !== 'get') {
             curl_setopt($curl, CURLOPT_HTTPHEADER, ['Content-Type:application/json']);
             curl_setopt($curl, CURLOPT_CUSTOMREQUEST, strtoupper($httpMethod));
             curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($params));
@@ -76,11 +77,17 @@ class SalebotProtocol implements ISalebotProtocol
         }
 
         $payload = json_decode($body, true);
+        if ($payload !== null) {
+            return new ResponseModel(
+                ($payload['status'] ?? Response::STATUS_SUCCESS),
+                $payload
+            );
+        }
+        if ($body === 'ok') {
+            return new ResponseModel(Response::STATUS_SUCCESS);
+        }
 
-        return new ResponseModel(
-            ($payload['status'] ?? Response::STATUS_SUCCESS),
-            $payload
-        );
+        return new ResponseModel(Response::STATUS_FAIL);
     }
 
     /**
