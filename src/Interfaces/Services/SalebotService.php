@@ -25,7 +25,16 @@ interface SalebotService
 
     public function whatsappMessage(string $phone, string $message = '', string $messageId = '', string $whatsappBotId = '', ?Attachment $attachment = null);
 
-    public function saveVariables(string $clientId, array $variables, array $clientsId = []);
+    /**
+     * Save variables to user
+     *
+     * @param string $clientId
+     * @param array  $variables
+     * @param array  $clientsId
+     *
+     * @return bool
+     */
+    public function saveVariables(string $clientId, array $variables, array $clientsId = []): bool;
 
     public function getVariables(string $clientId);
 

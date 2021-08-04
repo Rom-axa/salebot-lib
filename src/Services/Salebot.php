@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use professionalweb\salebot\Interfaces\Models\Button;
 use professionalweb\salebot\Interfaces\Models\Client;
 use professionalweb\salebot\Interfaces\Models\Message;
+use professionalweb\salebot\Interfaces\Models\Response;
 use professionalweb\salebot\Interfaces\Models\Attachment;
 use professionalweb\salebot\Models\Message as MessageModel;
 use professionalweb\salebot\Interfaces\Services\SalebotService;
@@ -169,7 +170,16 @@ class Salebot implements SalebotService
         return $result;
     }
 
-    public function saveVariables(string $clientId, array $variables, array $clientsId = [])
+    /**
+     * Save variables to user
+     *
+     * @param string $clientId
+     * @param array  $variables
+     * @param array  $clientsId
+     *
+     * @return bool
+     */
+    public function saveVariables(string $clientId, array $variables, array $clientsId = []): bool
     {
         $result = $this->getProtocol()->send(Request::METHOD_POST, self::METHOD_SAVE_VARIABLES, [
             'clients'   => $clientsId,
@@ -177,7 +187,7 @@ class Salebot implements SalebotService
             'variables' => $variables,
         ]);
 
-        return $result;
+        return $result->isSuccess();
     }
 
     public function getVariables(string $clientId)
