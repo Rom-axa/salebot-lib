@@ -1,4 +1,4 @@
-Library to communicate with Salebot[https://salebot.pro/]
+Library to communicate with [Salebot](https://salebot.pro/)
 ====
 
 [![Latest Stable Version](http://poser.pugx.org/professionalweb/salebot/v)](https://packagist.org/packages/professionalweb/salebot) 
