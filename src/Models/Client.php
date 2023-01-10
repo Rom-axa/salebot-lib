@@ -1,4 +1,8 @@
-<?php namespace professionalweb\salebot\Models;
+<?php
+
+declare(strict_types=1);
+
+namespace professionalweb\salebot\Models;
 
 use professionalweb\salebot\Interfaces\Models\Client as IClient;
 

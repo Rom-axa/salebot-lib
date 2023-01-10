@@ -1,4 +1,8 @@
-<?php namespace professionalweb\salebot\Interfaces\Models;
+<?php
+
+declare(strict_types=1);
+
+namespace professionalweb\salebot\Interfaces\Models;
 
 interface Client
 {

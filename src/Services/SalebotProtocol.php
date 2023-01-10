@@ -1,4 +1,8 @@
-<?php namespace professionalweb\salebot\Services;
+<?php
+
+declare(strict_types=1);
+
+namespace professionalweb\salebot\Services;
 
 use professionalweb\salebot\Interfaces\Models\Response;
 use professionalweb\salebot\Models\Response as ResponseModel;
@@ -59,10 +63,7 @@ class SalebotProtocol implements ISalebotProtocol
         }
         $curl = curl_init($url);
         curl_setopt($curl, CURLOPT_USERAGENT, 'PW.Sendsay.Lib/PHP');
-//        if ($httpMethod === 'post') {
-//            curl_setopt($curl, CURLOPT_POST, 1);
-//            curl_setopt($curl, CURLOPT_POSTFIELDS, $params);
-//        } else
+
         if ($httpMethod !== 'get') {
             curl_setopt($curl, CURLOPT_HTTPHEADER, ['Content-Type:application/json']);
             curl_setopt($curl, CURLOPT_CUSTOMREQUEST, strtoupper($httpMethod));

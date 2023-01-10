@@ -1,10 +1,12 @@
-<?php namespace professionalweb\salebot\Services;
+<?php
 
-use Illuminate\Http\Request;
+declare(strict_types=1);
+
+namespace professionalweb\salebot\Services;
+
 use professionalweb\salebot\Interfaces\Models\Button;
 use professionalweb\salebot\Interfaces\Models\Client;
 use professionalweb\salebot\Interfaces\Models\Message;
-use professionalweb\salebot\Interfaces\Models\Response;
 use professionalweb\salebot\Interfaces\Models\Attachment;
 use professionalweb\salebot\Models\Message as MessageModel;
 use professionalweb\salebot\Interfaces\Services\SalebotService;
@@ -67,7 +69,7 @@ class Salebot implements SalebotService
 
     public function callback(string $message, string $phone = '', string $email = '', string $id = '')
     {
-        $result = $this->getProtocol()->send(Request::METHOD_POST, self::METHOD_CALLBACK, [
+        $result = $this->getProtocol()->send('POST', self::METHOD_CALLBACK, [
             'client_phone' => $phone,
             'client_email' => $email,
             'client_id'    => $id,
@@ -79,7 +81,7 @@ class Salebot implements SalebotService
 
     public function vkCallback(string $groupId, string $userId, string $message = '')
     {
-        $result = $this->getProtocol()->send(Request::METHOD_POST, self::METHOD_VK_CALLBACK, [
+        $result = $this->getProtocol()->send('POST', self::METHOD_VK_CALLBACK, [
             'user_id'  => $userId,
             'group_id' => $groupId,
             'message'  => $message,
@@ -90,7 +92,7 @@ class Salebot implements SalebotService
 
     public function whatsappCallback(string $phone, string $name = '', string $message = '', string $botId = '')
     {
-        $result = $this->getProtocol()->send(Request::METHOD_POST, self::METHOD_WHATSAPP_CALLBACK, [
+        $result = $this->getProtocol()->send('POST', self::METHOD_WHATSAPP_CALLBACK, [
             'name'    => $name,
             'message' => $message,
             'phone'   => $phone,
@@ -102,7 +104,7 @@ class Salebot implements SalebotService
 
     public function okCallback(string $groupId, string $userId, string $message)
     {
-        $result = $this->getProtocol()->send(Request::METHOD_POST, self::METHOD_OK_CALLBACK, [
+        $result = $this->getProtocol()->send('POST', self::METHOD_OK_CALLBACK, [
             'user_id'  => $userId,
             'group_id' => $groupId,
             'message'  => $message,
@@ -113,7 +115,7 @@ class Salebot implements SalebotService
 
     public function tgCallback(string $groupId, string $userId, string $message)
     {
-        $result = $this->getProtocol()->send(Request::METHOD_POST, self::METHOD_TELEGRAM_CALLBACK, [
+        $result = $this->getProtocol()->send('POST', self::METHOD_TELEGRAM_CALLBACK, [
             'user_id'  => $userId,
             'group_id' => $groupId,
             'message'  => $message,
@@ -124,7 +126,7 @@ class Salebot implements SalebotService
 
     public function sendMessage(string $clientId, string $message = '', string $messageId = '', ?Attachment $attachment = null, array $buttons = [])
     {
-        $result = $this->getProtocol()->send(Request::METHOD_POST, self::METHOD_MESSAGE, [
+        $result = $this->getProtocol()->send('POST', self::METHOD_MESSAGE, [
             'message_id'      => $messageId,
             'message'         => $message,
             'client_id'       => $clientId,
@@ -140,7 +142,7 @@ class Salebot implements SalebotService
 
     public function broadcast(array $clientIds = [], string $message = '', string $messageId = '', string $list = '', float $shift = 0.2, ?Attachment $attachment = null, array $buttons = [])
     {
-        $result = $this->getProtocol()->send(Request::METHOD_POST, self::METHOD_MESSAGE_BROADCAST, [
+        $result = $this->getProtocol()->send('POST', self::METHOD_MESSAGE_BROADCAST, [
             'message_id'      => $messageId,
             'list'            => $list,
             'shift'           => $shift,
@@ -158,7 +160,7 @@ class Salebot implements SalebotService
 
     public function whatsappMessage(string $phone, string $message = '', string $messageId = '', string $whatsappBotId = '', ?Attachment $attachment = null)
     {
-        $result = $this->getProtocol()->send(Request::METHOD_POST, self::METHOD_MESSAGE_WHATSAPP, [
+        $result = $this->getProtocol()->send('POST', self::METHOD_MESSAGE_WHATSAPP, [
             'message_id'      => $messageId,
             'whatsapp_bot_id' => $whatsappBotId,
             'phone'           => $phone,
@@ -181,7 +183,7 @@ class Salebot implements SalebotService
      */
     public function saveVariables(string $clientId, array $variables, array $clientsId = []): bool
     {
-        $result = $this->getProtocol()->send(Request::METHOD_POST, self::METHOD_SAVE_VARIABLES, [
+        $result = $this->getProtocol()->send('POST', self::METHOD_SAVE_VARIABLES, [
             'clients'   => $clientsId,
             'client_id' => $clientId,
             'variables' => $variables,
@@ -192,7 +194,7 @@ class Salebot implements SalebotService
 
     public function getVariables(string $clientId)
     {
-        $result = $this->getProtocol()->send(Request::METHOD_GET, self::METHOD_GET_VARIABLES, [
+        $result = $this->getProtocol()->send('GET', self::METHOD_GET_VARIABLES, [
             'client_id' => $clientId,
         ]);
 
@@ -201,7 +203,7 @@ class Salebot implements SalebotService
 
     public function getClients(int $limit, int $offset)
     {
-        $result = $this->getProtocol()->send(Request::METHOD_GET, self::METHOD_GET_CLIENTS, [
+        $result = $this->getProtocol()->send('GET', self::METHOD_GET_CLIENTS, [
             'offset' => $offset,
             'limit'  => $limit,
         ]);
@@ -211,7 +213,7 @@ class Salebot implements SalebotService
 
     public function getHistory(string $clientId)
     {
-        $result = $this->getProtocol()->send(Request::METHOD_GET, self::METHOD_GET_HISTORY, [
+        $result = $this->getProtocol()->send('GET', self::METHOD_GET_HISTORY, [
             'client_id' => $clientId,
         ]);
 
@@ -220,7 +222,7 @@ class Salebot implements SalebotService
 
     public function clearHistory(string $clientId)
     {
-        $result = $this->getProtocol()->send(Request::METHOD_GET, self::METHOD_CLEAR_HISTORY, [
+        $result = $this->getProtocol()->send('GET', self::METHOD_CLEAR_HISTORY, [
             'client_id' => $clientId,
         ]);
 
@@ -229,14 +231,14 @@ class Salebot implements SalebotService
 
     public function getConnectedChannels()
     {
-        $result = $this->getProtocol()->send(Request::METHOD_GET, self::METHOD_GET_CHANNELS);
+        $result = $this->getProtocol()->send('GET', self::METHOD_GET_CHANNELS);
 
         return $result;
     }
 
     public function getOnlineChatClientId(string $recipient, string $name = '', string $tag = '')
     {
-        $result = $this->getProtocol()->send(Request::METHOD_GET, self::METHOD_CLIENT_ID_BY_CHAT, [
+        $result = $this->getProtocol()->send('GET', self::METHOD_CLIENT_ID_BY_CHAT, [
             'tag'       => $tag,
             'name'      => $name,
             'recipient' => $recipient,
@@ -247,7 +249,7 @@ class Salebot implements SalebotService
 
     public function uploadClients(array $clients)
     {
-        $result = $this->getProtocol()->send(Request::METHOD_POST, self::METHOD_UPLOAD_CLIENTS, [
+        $result = $this->getProtocol()->send('POST', self::METHOD_UPLOAD_CLIENTS, [
             'clients' => array_map(function (Client $client) {
                 return $client->toArray();
             }, $clients),
@@ -258,7 +260,7 @@ class Salebot implements SalebotService
 
     public function getClientIdByWhatsApp(string $phone)
     {
-        $result = $this->getProtocol()->send(Request::METHOD_GET, self::METHOD_WHATSAPP_CLIENT_ID, [
+        $result = $this->getProtocol()->send('GET', self::METHOD_WHATSAPP_CLIENT_ID, [
             'phone' => $phone,
         ]);
 
@@ -274,7 +276,7 @@ class Salebot implements SalebotService
      */
     public function getClientIdByPhone(string $phone): ?int
     {
-        $result = $this->getProtocol()->send(Request::METHOD_GET, self::METHOD_CLIENT_ID_BY_PHONE, [
+        $result = $this->getProtocol()->send('GET', self::METHOD_CLIENT_ID_BY_PHONE, [
             'phone' => $phone,
         ]);
 
@@ -294,7 +296,7 @@ class Salebot implements SalebotService
      */
     public function getClientIdByEmail(string $email): ?int
     {
-        $result = $this->getProtocol()->send(Request::METHOD_GET, self::METHOD_CLIENT_ID_BY_EMAIL, [
+        $result = $this->getProtocol()->send('GET', self::METHOD_CLIENT_ID_BY_EMAIL, [
             'email' => $email,
         ]);
         if ($result->isSuccess()) {
@@ -314,7 +316,7 @@ class Salebot implements SalebotService
      */
     public function getClientIdByVar(string $var, $val): ?int
     {
-        $result = $this->getProtocol()->send(Request::METHOD_GET, self::METHOD_CLIENT_ID_BY_VAR, [
+        $result = $this->getProtocol()->send('GET', self::METHOD_CLIENT_ID_BY_VAR, [
             'var' => $var,
             'val' => $val,
         ]);
@@ -328,7 +330,7 @@ class Salebot implements SalebotService
 
     public function getVkSubscribers(int $page = 0, string $tag = '', ?int $group = null, ?int $dateFrom = null, ?int $dateTo = null)
     {
-        $result = $this->getProtocol()->send(Request::METHOD_GET, self::METHOD_VK_SUBSCRIBERS, [
+        $result = $this->getProtocol()->send('GET', self::METHOD_VK_SUBSCRIBERS, [
             'page'      => $page,
             'tag'       => $tag,
             'group'     => $group,
@@ -341,7 +343,7 @@ class Salebot implements SalebotService
 
     public function checkInstagramSubscription(string $userName, string $login = '')
     {
-        $result = $this->getProtocol()->send(Request::METHOD_GET, self::METHOD_CHECK_INSTAGRAM_SUBSCRIPTION, [
+        $result = $this->getProtocol()->send('GET', self::METHOD_CHECK_INSTAGRAM_SUBSCRIPTION, [
             'user_name' => $userName,
             'login'     => $login,
         ]);
@@ -351,7 +353,7 @@ class Salebot implements SalebotService
 
     public function checkWhatsApp(string $phone)
     {
-        $result = $this->getProtocol()->send(Request::METHOD_GET, self::METHOD_CHECK_WHATSAPP, [
+        $result = $this->getProtocol()->send('GET', self::METHOD_CHECK_WHATSAPP, [
             'phone' => $phone,
         ]);
 
@@ -365,7 +367,7 @@ class Salebot implements SalebotService
      */
     public function getMessages(): array
     {
-        $result = $this->getProtocol()->send(Request::METHOD_GET, self::METHOD_MESSAGES);
+        $result = $this->getProtocol()->send('GET', self::METHOD_MESSAGES);
 
         if ($result->isSuccess()) {
             return array_map(function (array $item) {

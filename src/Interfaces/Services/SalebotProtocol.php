@@ -1,4 +1,8 @@
-<?php namespace professionalweb\salebot\Interfaces\Services;
+<?php
+
+declare(strict_types=1);
+
+namespace professionalweb\salebot\Interfaces\Services;
 
 use professionalweb\salebot\Interfaces\Models\Response;
 
