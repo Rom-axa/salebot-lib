@@ -201,12 +201,10 @@ class Salebot implements SalebotService
         return $result;
     }
 
-    public function getClients(int $limit, int $offset)
+    public function getClients(?int $limit = null, ?int $offset = null)
     {
-        $result = $this->getProtocol()->send('GET', self::METHOD_GET_CLIENTS, [
-            'offset' => $offset,
-            'limit'  => $limit,
-        ]);
+        $params = array_filter(compact('limit', 'offset'));
+        $result = $this->getProtocol()->send('GET', self::METHOD_GET_CLIENTS, $params);
 
         return $result;
     }
