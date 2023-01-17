@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace professionalweb\salebot\Models;
+namespace Salebot\Models;
 
-use professionalweb\salebot\Interfaces\Models\Response as IResponse;
+use Salebot\Interfaces\Models\Response as IResponse;
 
 class Response implements IResponse
 {

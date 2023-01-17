@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace professionalweb\salebot\Services;
+namespace Salebot\Services;
 
-use professionalweb\salebot\Interfaces\Models\Response;
-use professionalweb\salebot\Models\Response as ResponseModel;
-use professionalweb\salebot\Interfaces\Services\SalebotProtocol as ISalebotProtocol;
+use Salebot\Interfaces\Models\Response;
+use Salebot\Interfaces\Services\ProtocolInterface;
+use Salebot\Models\Response as ResponseModel;
 
 /**
  * Service-protocol
- * @package professionalweb\salebot\Services
+ * @package Salebot\Services
  */
-class SalebotProtocol implements ISalebotProtocol
+class SalebotProtocol implements ProtocolInterface
 {
 
     /** @var string */

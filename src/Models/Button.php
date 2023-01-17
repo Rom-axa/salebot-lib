@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace professionalweb\salebot\Models;
+namespace Salebot\Models;
 
-use professionalweb\salebot\Interfaces\Models\Button as IButton;
+use Salebot\Interfaces\Models\Button as IButton;
 
 /**
  * Button
- * @package professionalweb\salebot\Models
+ * @package Salebot\Models
  */
 class Button implements IButton
 {

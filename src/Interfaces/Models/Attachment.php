@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace professionalweb\salebot\Interfaces\Models;
+namespace Salebot\Interfaces\Models;
 
 /**
  * Interface for message attachment
- * @package professionalweb\salebot\Interfaces\Models
+ * @package Salebot\Interfaces\Models
  */
 interface Attachment
 {

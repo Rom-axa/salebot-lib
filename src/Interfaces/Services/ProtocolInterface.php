@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace professionalweb\salebot\Interfaces\Services;
+namespace Salebot\Interfaces\Services;
 
-use professionalweb\salebot\Interfaces\Models\Response;
+use Salebot\Interfaces\Models\Response;
 
 /**
  * Interface for salebot protocol
- * @package professionalweb\salebot\Interfaces\Services
+ * @package Salebot\Interfaces\Services
  */
-interface SalebotProtocol
+interface ProtocolInterface
 {
     /**
      * Send request to API

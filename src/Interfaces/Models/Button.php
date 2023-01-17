@@ -3,11 +3,11 @@
 declare(strict_types=1);
 
 
-namespace professionalweb\salebot\Interfaces\Models;
+namespace Salebot\Interfaces\Models;
 
 /**
  * Interface button
- * @package professionalweb\salebot\Interfaces\Models
+ * @package Salebot\Interfaces\Models
  */
 interface Button
 {

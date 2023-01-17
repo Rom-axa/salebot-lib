@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace professionalweb\salebot\Services;
+namespace Salebot\Services;
 
-use professionalweb\salebot\Interfaces\Models\Button;
-use professionalweb\salebot\Interfaces\Models\Client;
-use professionalweb\salebot\Interfaces\Models\Message;
-use professionalweb\salebot\Interfaces\Models\Attachment;
-use professionalweb\salebot\Models\Message as MessageModel;
-use professionalweb\salebot\Interfaces\Services\SalebotService;
-use professionalweb\salebot\Interfaces\Services\SalebotProtocol as ISalebotProtocol;
+use Salebot\Interfaces\Models\Button;
+use Salebot\Interfaces\Models\Client;
+use Salebot\Interfaces\Models\Message;
+use Salebot\Interfaces\Models\Attachment;
+use Salebot\Interfaces\Services\ClientInterface;
+use Salebot\Interfaces\Services\ProtocolInterface;
+use Salebot\Models\Message as MessageModel;
 
-class Salebot implements SalebotService
+class Salebot implements ClientInterface
 {
     public const METHOD_CALLBACK = 'callback';
     public const METHOD_VK_CALLBACK = 'vk_callback';
@@ -39,28 +39,28 @@ class Salebot implements SalebotService
     public const METHOD_CHECK_WHATSAPP = 'check_whatsapp';
     public const METHOD_MESSAGES = 'get_messages';
 
-    /** @var ISalebotProtocol */
+    /** @var ProtocolInterface */
     private $protocol;
 
-    public function __construct(ISalebotProtocol $protocol)
+    public function __construct(ProtocolInterface $protocol)
     {
         $this->setProtocol($protocol);
     }
 
     /**
-     * @return ISalebotProtocol
+     * @return ProtocolInterface
      */
-    public function getProtocol(): ISalebotProtocol
+    public function getProtocol(): ProtocolInterface
     {
         return $this->protocol;
     }
 
     /**
-     * @param ISalebotProtocol $protocol
+     * @param ProtocolInterface $protocol
      *
      * @return Salebot
      */
-    public function setProtocol(ISalebotProtocol $protocol): Salebot
+    public function setProtocol(ProtocolInterface $protocol): Salebot
     {
         $this->protocol = $protocol;
 

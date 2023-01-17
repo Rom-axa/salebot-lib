@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace professionalweb\salebot\Models;
+namespace Salebot\Models;
 
-use professionalweb\salebot\Interfaces\Models\Client as IClient;
+use Salebot\Interfaces\Models\Client as IClient;
 
 /**
  * Client
- * @package professionalweb\salebot\Models
+ * @package Salebot\Models
  */
 class Client implements IClient
 {

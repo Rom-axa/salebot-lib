@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace professionalweb\salebot\Interfaces\Models;
+namespace Salebot\Interfaces\Models;
 
 interface Client
 {

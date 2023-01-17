@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace professionalweb\salebot\Interfaces\Services;
+namespace Salebot\Interfaces\Services;
 
-use professionalweb\salebot\Interfaces\Models\Message;
-use professionalweb\salebot\Interfaces\Models\Attachment;
+use Salebot\Interfaces\Models\Message;
+use Salebot\Interfaces\Models\Attachment;
 
 /**
  * Interface for Salebot service
- * @package professionalweb\salebot\Interfaces\Services
+ * @package Salebot\Interfaces\Services
  */
-interface SalebotService
+interface ClientInterface
 {
     public function callback(string $message, string $phone = '', string $email = '', string $id = '');
 

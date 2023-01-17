@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace professionalweb\salebot\Models;
+namespace Salebot\Models;
 
-use professionalweb\salebot\Interfaces\Models\Attachment as IAttachment;
+use Salebot\Interfaces\Models\Attachment as IAttachment;
 
 class Attachment implements IAttachment
 {
