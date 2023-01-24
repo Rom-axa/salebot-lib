@@ -7,6 +7,7 @@ namespace Salebot\Services;
 use Salebot\Interfaces\Models\Response;
 use Salebot\Interfaces\Services\ProtocolInterface;
 use Salebot\Models\Response as ResponseModel;
+use Throwable;
 
 /**
  * Service-protocol
@@ -57,38 +58,56 @@ class SalebotProtocol implements ProtocolInterface
     {
         $httpMethod = mb_strtolower($httpMethod);
         $url = $this->getCommandUrl($apiMethod);
+
         if ($httpMethod === 'get') {
             $url .= strpos($url, '?') ? '&' : '?';
             $url .= http_build_query($params);
         }
-        $curl = curl_init($url);
-        curl_setopt($curl, CURLOPT_USERAGENT, 'PW.Sendsay.Lib/PHP');
 
-        if ($httpMethod !== 'get') {
-            curl_setopt($curl, CURLOPT_HTTPHEADER, ['Content-Type:application/json']);
-            curl_setopt($curl, CURLOPT_CUSTOMREQUEST, strtoupper($httpMethod));
-            curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($params));
-        }
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        try {
+            $curl = curl_init($url);
+            curl_setopt($curl, CURLOPT_USERAGENT, 'PW.Sendsay.Lib/PHP');
 
-        $body = curl_exec($curl);
+            if ($httpMethod !== 'get') {
+                curl_setopt($curl, CURLOPT_HTTPHEADER, ['Content-Type:application/json']);
+                curl_setopt($curl, CURLOPT_CUSTOMREQUEST, strtoupper($httpMethod));
+                curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($params));
+            }
 
-        if (curl_getinfo($curl, CURLINFO_HTTP_CODE) >= 400) {
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+            $body = curl_exec($curl);
+
+            if (curl_getinfo($curl, CURLINFO_HTTP_CODE) >= 400) {
+                if ($body === false) {
+                    $error = curl_error($curl);
+
+                    $payload = [
+                        'result' => $error,
+                    ];
+                } else {
+                    $payload = $this->getPayloadFromResponseBody($body);
+                }
+
+                return new ResponseModel(Response::STATUS_FAIL, $payload);
+            }
+
+            $payload = $this->getPayloadFromResponseBody($body);
+
+            if ($payload !== []) {
+                return new ResponseModel(
+                    ($payload['status'] ?? Response::STATUS_SUCCESS),
+                    $payload
+                );
+            }
+
+            if ($body === 'ok') {
+                return new ResponseModel(Response::STATUS_SUCCESS);
+            }
+
             return new ResponseModel(Response::STATUS_FAIL);
+        } finally {
+            curl_close($curl);
         }
-
-        $payload = json_decode($body, true);
-        if ($payload !== null) {
-            return new ResponseModel(
-                ($payload['status'] ?? Response::STATUS_SUCCESS),
-                $payload
-            );
-        }
-        if ($body === 'ok') {
-            return new ResponseModel(Response::STATUS_SUCCESS);
-        }
-
-        return new ResponseModel(Response::STATUS_FAIL);
     }
 
     /**
@@ -107,5 +126,20 @@ class SalebotProtocol implements ProtocolInterface
         }
 
         return 'https://chatter.salebot.pro/api/' . $apiKey . '/' . $method;
+    }
+
+    /**
+     * @param mixed $body
+     * @return array
+     */
+    private function getPayloadFromResponseBody($body): array
+    {
+        if (!is_string($body)) {
+            return [];
+        }
+
+        $result = json_decode($body) ?: $body;
+
+        return compact('result');
     }
 }
