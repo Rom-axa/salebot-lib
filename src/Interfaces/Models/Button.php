@@ -29,9 +29,9 @@ interface Button
     /**
      * Get url
      *
-     * @return string
+     * @return string|null
      */
-    public function getUrl(): string;
+    public function getUrl(): ?string;
 
     /**
      * Get button color

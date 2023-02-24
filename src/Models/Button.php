@@ -15,8 +15,8 @@ class Button implements IButton
     /** @var string */
     private $type;
 
-    /** @var string */
-    private $url;
+    /** @var string|null */
+    private $url = null;
 
     /** @var string */
     private $color;
@@ -46,11 +46,11 @@ class Button implements IButton
     }
 
     /**
-     * @param string $url
+     * @param string|null $url
      *
      * @return Button
      */
-    public function setUrl(string $url): Button
+    public function setUrl(?string $url): Button
     {
         $this->url = $url;
 
@@ -130,9 +130,9 @@ class Button implements IButton
     /**
      * Get url
      *
-     * @return string
+     * @return string|null
      */
-    public function getUrl(): string
+    public function getUrl(): ?string
     {
         return $this->url;
     }
@@ -201,6 +201,6 @@ class Button implements IButton
             'index_in_line' => $this->getIndexInLine(),
             'color'         => $this->getColor(),
             'one_time'      => $this->isOneTime() ? 1 : 0,
-        ];
+        ] + ($this->getUrl() === null ? [] : ['url' => $this->getUrl()]);
     }
 }
