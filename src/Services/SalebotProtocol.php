@@ -138,7 +138,7 @@ class SalebotProtocol implements ProtocolInterface
             return [];
         }
 
-        $result = json_decode($body) ?: $body;
+        $result = json_decode($body, true) ?: $body;
 
         return compact('result');
     }
